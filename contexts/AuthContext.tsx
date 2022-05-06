@@ -32,6 +32,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const { 'nextauth.token': token } = parseCookies();
+
     if (token) {
       api.get('/me').then(response => {
         const { email, permissions, roles } = response.data;
@@ -48,7 +49,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         password,
       })
 
-      const { token, refreshToken, permissions, roles } = response.data;
+      const { token, refreshToken, permissions, roles } = response?.data;
 
       setUser({
         email,
@@ -61,7 +62,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         path: '/'
       });
 
-      setCookie(undefined, 'nextauth.refeshtoken', refreshToken, {
+      setCookie(undefined, 'nextauth.refreshToken', refreshToken, {
         maxAge: 60 * 60 * 24 * 30, // 30 days
         path: '/'
       });
